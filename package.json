@@ -1,0 +1,15 @@
+{
+  "name": "containersify",
+  "version": "0.0.2",
+  "description": "A simple and lightweight dependency injection library for JavaScript and TypeScript without reflection",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/b-ponomarenko/containersify"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["dependency", "injection", "ioc", "container", "di", "inversion of control"],
+  "author": "Bogdan Ponomarenko",
+  "license": "ISC"
+}
