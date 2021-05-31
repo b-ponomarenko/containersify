@@ -27,8 +27,8 @@ type Options<
 }
 
 export type TokenType<T> = TokenMetadata<T>['type'];
-export type IsTokenMulti<T> = TokenMetadata<T>['multi'];
-export type IsTokenOptional<T> = TokenMetadata<T>['multi'];
+export type TokenMulti<T> = TokenMetadata<T>['multi'];
+export type TokenOptional<T> = TokenMetadata<T>['optional'];
 
 export type TokenMetadata<T> =
     T extends Token<infer Type, infer Multi, infer Optional> ? { type: Type; multi: Multi; optional: Optional } : never;
