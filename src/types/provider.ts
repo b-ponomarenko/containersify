@@ -7,7 +7,7 @@ type ProviderReturnType<T> = T extends CreatedToken ? TokenType<T> : any;
 type InferOptional<Token, Optional> = Optional extends true ? Token | null : Token;
 type InferMulti<Token, Multi> = Multi extends true ? Token[] : Token;
 
-type InferArgument<Token, Multi, Optional> = InferOptional<InferMulti<Token, Multi>, Optional>;
+export type InferArgument<Token, Multi, Optional> = InferOptional<InferMulti<Token, Multi>, Optional>;
 
 type Arguments<Deps> = Deps extends ReadonlyArray<any>
     ? {
