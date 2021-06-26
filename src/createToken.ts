@@ -1,12 +1,12 @@
-class Token<
+export class Token<
     TokenType,
     Multi extends boolean,
     Optional extends boolean
 > {
     constructor(
         private tokenName: string,
-        private multi: Multi,
-        private optional: Optional,
+        private multi: Multi = false as Multi,
+        private optional: Optional = false as Optional,
     ) {}
 
     toString() {

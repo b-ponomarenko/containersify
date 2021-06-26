@@ -39,3 +39,10 @@ const car = container.get('carFactory'); // Car
 ```
 
 ## API
+
+## TODO
+
+- [ ] Add child container support
+- [ ] Add check for circular dependecy
+- [ ] Add tests for errors
+- [ ] Change provider singleton provider to request and warn user if provider has request providers in deps

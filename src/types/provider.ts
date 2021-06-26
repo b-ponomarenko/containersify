@@ -3,37 +3,41 @@ import {Scope} from "../consts/scope";
 
 export type CreatedToken = ReturnType<typeof createToken>;
 
-type ProviderReturnType<T> = T extends CreatedToken ? TokenType<T> : any;
+type ProviderReturnType<T> = TokenType<T>;
 type InferOptional<Token, Optional> = Optional extends true ? Token | null : Token;
 type InferMulti<Token, Multi> = Multi extends true ? Token[] : Token;
 
 export type InferArgument<Token, Multi, Optional> = InferOptional<InferMulti<Token, Multi>, Optional>;
 
-type Arguments<Deps> = Deps extends ReadonlyArray<any>
+export type Arguments<Deps> = Deps extends ReadonlyArray<any>
     ? {
         [Dependency in keyof Deps]:
-            Deps[Dependency] extends { token: infer Token, optional?: infer Optional, multi?: infer Multi } ?
-          InferArgument<TokenType<Token>, Multi, Optional>
+            Deps[Dependency] extends { token: infer Token, optional?: infer Optional } ?
+          InferArgument<TokenType<Token>, TokenMulti<Token>, Optional>
               : Deps[Dependency] extends CreatedToken ? InferArgument<TokenType<Deps[Dependency]>, TokenMulti<Deps[Dependency]>, TokenOptional<Deps[Dependency]>>
-          : never
+          : []
     }
     : [];
 
 type ScopeValues<Scopes> = Scopes extends { readonly [key in keyof Scopes]: infer T } ? T : never;
 
+export type Scopes = ScopeValues<Scope>;
+
+export type Factory<Token, Deps extends any> = (...args: Arguments<Deps>) => ProviderReturnType<Token>;
+
 export type ValueProvider<Token> = {
     provide: Token;
-    useValue: ProviderReturnType<Token>;
+    useValue: TokenType<Token>;
     multi?: boolean;
 };
 
 export type FactoryProvider<
-    Deps extends any,
-    Token
+    Token,
+    Deps extends any = [],
 > = {
     provide: Token;
-    useFactory: (...args: Arguments<Deps>) => ProviderReturnType<Token>,
-    scope?: ScopeValues<Scope>,
+    useFactory: Factory<Token, Deps>,
+    scope?: Scopes,
     deps?: Deps,
     multi?: boolean;
 }
@@ -48,7 +52,7 @@ export type ClassProvider<
             ...args: Arguments<Deps>
         ): ProviderReturnType<Token>
     },
-    scope?: ScopeValues<Scope>,
+    scope?: Scopes,
     deps?: Deps,
     multi?: boolean;
 }
@@ -59,5 +63,5 @@ export type Provider<
     Deps,
 > =
     | ValueProvider<Token>
-    | FactoryProvider<Deps, Token>
+    | FactoryProvider<Token, Deps>
     | ClassProvider<Deps, Token>;
